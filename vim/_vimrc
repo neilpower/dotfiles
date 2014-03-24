@@ -83,8 +83,8 @@ else
 endif
 
 " use `w to control window stuff instead of <c-w>
-" nnoremap `w <c-w>
-" nnoremap <c-w> <nop>
+nnoremap `w <c-w>
+nnoremap <c-w> <nop>
 
 " nnoremap `k <c-e>
 " nnoremap `j <c-y>
