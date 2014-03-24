@@ -1,0 +1,2 @@
+http://git-scm.com/book/en/Git-Tools-Submodules
+http://usevim.com/2012/03/01/using-pathogen-with-git-submodules/
