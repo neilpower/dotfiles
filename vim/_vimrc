@@ -43,7 +43,7 @@ set list
 
 " turn on number and relativenumber
 set number
-" set relativenumber
+set relativenumber
 
 " turn on search result hightlighting
 set hlsearch
@@ -56,7 +56,9 @@ endif
 let Tlist_Use_Right_Window = 1
 
 " look for tags file in parent directories
-set tags=./tags,tags,../../tags
+"set tags=./tags,tags,../../tags
+
+set visualbell
 
 let mapleader = "-"
 let maplocalleader = "\\"
@@ -71,6 +73,11 @@ nnoremap <leader>se :resize 34<cr>
 nnoremap <leader>tl :TlistToggle<cr>
 nnoremap <leader>hl :nohlsearch<cr>
 nnoremap <leader>msg O::msg_vdebug("shane: 
+nnoremap <c-j> 3<c-e>
+nnoremap <c-k> 3<c-y>
+
+"nnoremap <silent><a-o> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <silent><leader>o :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
 if has('win32')
 	nnoremap <leader>nt :NERDTree D:\work<cr>
@@ -97,9 +104,9 @@ nnoremap <c-w> <nop>
 " nnoremap ;; ;
 " nnoremap ,, ,
 
-" use jj instead of <esc> to exit insert mode
+" use jj instead of <esc> to exit insert/visual mode
 inoremap jk <esc>
-" inoremap <esc> <nop>
+vnoremap jk <esc>
 
 " always show a list of tags if more than one is found
 nnoremap <c-]> g<c-]>
