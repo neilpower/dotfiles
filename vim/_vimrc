@@ -1,20 +1,5 @@
 execute pathogen#infect()
 
-" " --- vundle setup -------------------------------------------------------------
-" set nocompatible              " be iMproved, required
-" filetype off                  " required
-" 
-" set rtp+=~/.vim/bundle/vundle/
-" call vundle#rc()
-" 
-" Bundle 'gmarik/vundle'
-" Bundle 'tpope/vim-sensible'
-" Bundle 'scrooloose/nerdtree'
-" Bundle 'taglist.vim'
-" 
-" filetype plugin indent on     " required
-" " ------------------------------------------------------------------------------
-
 if has('gui_running')
     colorscheme slate
 
@@ -48,15 +33,23 @@ set relativenumber
 " turn on search result hightlighting
 set hlsearch
 
+" turn on folding using syntax
+set foldmethod=syntax
+
 " configure taglist
 if has('win32')
     " let taglist find the ctags executable
     let Tlist_Ctags_Cmd = 'C:\Users\soconnel\Applications\ctags58\ctags.exe'
+    let g:ctrlp_buftag_ctags_bin = 'C:\Users\soconnel\Applications\ctags58\ctags.exe'
+else
+    let Tlist_Ctags_Cmd = '/home/soconnel/bin/ctags/bin/ctags'
+    let g:ctrlp_buftag_ctags_bin = '/home/soconnel/bin/ctags/bin/ctags'
 endif
 let Tlist_Use_Right_Window = 1
 
-" look for tags file in parent directories
-"set tags=./tags,tags,../../tags
+" configure ctrlp
+let g:ctrlp_extensions = ['undo', 'line', 'mixed', 'buffertag']
+let g:ctrlp_cmd = 'CtrlPMRU'
 
 set visualbell
 
@@ -67,44 +60,31 @@ nnoremap <leader>cl :let @l=expand('%:p') . ":" . line('.') . "\n -> " . getline
 nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
 nnoremap <leader>w- O<esc>80i-<esc>j^
-" use ctrl-^ from now on
-" nnoremap <leader>bl :b#<cr>
-nnoremap <leader>se :resize 34<cr>
 nnoremap <leader>tl :TlistToggle<cr>
 nnoremap <leader>hl :nohlsearch<cr>
 nnoremap <leader>msg O::msg_vdebug("shane: 
 nnoremap <c-j> 3<c-e>
 nnoremap <c-k> 3<c-y>
 
+" use [<space> and ]<space> from unimpaired instead
 "nnoremap <silent><a-o> :set paste<CR>m`o<Esc>``:set nopaste<CR>
-nnoremap <silent><leader>o :set paste<CR>m`O<Esc>``:set nopaste<CR>
+"nnoremap <silent><leader>o :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
 if has('win32')
+	nnoremap <leader>cdw :cd D:\work<cr>
 	nnoremap <leader>nt :NERDTree D:\work<cr>
 	nnoremap <leader>ct :ConqueTerm C:\Windows\System32\cmd.exe /k S:\tools\acds_bri\arc_shortcut.bat<cr>
-	nnoremap <leader>en :e X:\work\notes.txt<cr>
 else
+	nnoremap <leader>cdw :cd /data/soconnel/work<cr>
 	nnoremap <leader>nt :NERDTree /data/soconnel/work<cr>
 	nnoremap <leader>ct :ConqueTerm bash<cr>
-	nnoremap <leader>en :e /data/soconnel/work/notes.txt<cr>
 endif
 
 " use `w to control window stuff instead of <c-w>
 nnoremap `w <c-w>
 nnoremap <c-w> <nop>
 
-" nnoremap `k <c-e>
-" nnoremap `j <c-y>
-
-" use ; instead of : to do ex commands
-" nnoremap ; :
-" nnoremap : <nop>
-
-" use ;; for ; and ,, for , since I use them for : and <leader>
-" nnoremap ;; ;
-" nnoremap ,, ,
-
-" use jj instead of <esc> to exit insert/visual mode
+" use jk to exit insert/visual mode
 inoremap jk <esc>
 vnoremap jk <esc>
 
