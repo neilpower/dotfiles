@@ -63,8 +63,10 @@ nnoremap <leader>w- O<esc>80i-<esc>j^
 nnoremap <leader>tl :TlistToggle<cr>
 nnoremap <leader>hl :nohlsearch<cr>
 nnoremap <leader>msg O::msg_vdebug("shane: 
-nnoremap <c-j> 3<c-e>
-nnoremap <c-k> 3<c-y>
+nnoremap <c-j> 4<c-e>
+nnoremap <c-k> 4<c-y>
+nnoremap <a-j> 10j
+nnoremap <a-k> 10k
 
 " use [<space> and ]<space> from unimpaired instead
 "nnoremap <silent><a-o> :set paste<CR>m`o<Esc>``:set nopaste<CR>
