@@ -45,7 +45,7 @@ else
     let Tlist_Ctags_Cmd = '/home/soconnel/bin/ctags/bin/ctags'
     let g:ctrlp_buftag_ctags_bin = '/home/soconnel/bin/ctags/bin/ctags'
 endif
-let Tlist_Use_Right_Window = 1
+" let Tlist_Use_Right_Window = 1
 
 " configure ctrlp
 let g:ctrlp_extensions = ['undo', 'line', 'mixed', 'buffertag']
@@ -53,7 +53,7 @@ let g:ctrlp_cmd = 'CtrlPMRU'
 
 set visualbell
 
-let mapleader = "-"
+let mapleader = "\<space>"
 let maplocalleader = "\\"
 nnoremap <leader>el :execute getline('.')<cr>
 nnoremap <leader>cl :let @l=expand('%:p') . ":" . line('.') . "\n -> " . getline('.') . "\n\n"<cr>
@@ -67,6 +67,19 @@ nnoremap <c-j> 4<c-e>
 nnoremap <c-k> 4<c-y>
 nnoremap <a-j> 10j
 nnoremap <a-k> 10k
+
+map <leader>f <Plug>(easymotion-f)
+map <leader>F <Plug>(easymotion-F)
+map <leader>t <Plug>(easymotion-t)
+map <leader>T <Plug>(easymotion-T)
+" map <leader>w <Plug>(easymotion-bd-w)
+map <leader>w <Plug>(easymotion-w)
+map <leader>W <Plug>(easymotion-W)
+map <leader>b <Plug>(easymotion-b)
+map <leader>B <Plug>(easymotion-B)
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
+map <leader>ma <Plug>(easymotion-jumptoanywhere)
 
 " use [<space> and ]<space> from unimpaired instead
 "nnoremap <silent><a-o> :set paste<CR>m`o<Esc>``:set nopaste<CR>
