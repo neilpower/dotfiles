@@ -68,7 +68,8 @@ nnoremap <c-k> 4<c-y>
 nnoremap <a-j> 10j
 nnoremap <a-k> 10k
 
-map <leader>f <Plug>(easymotion-f)
+" map <leader>f <Plug>(easymotion-f)
+map <leader>f <Plug>(easymotion-bd-f)
 map <leader>F <Plug>(easymotion-F)
 map <leader>t <Plug>(easymotion-t)
 map <leader>T <Plug>(easymotion-T)
