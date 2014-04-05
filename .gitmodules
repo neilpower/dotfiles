@@ -19,3 +19,9 @@
 [submodule "vim/vimfiles/bundle/vim-easymotion"]
 	path = vim/vimfiles/bundle/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion.git
+[submodule "vim/vimfiles/bundle/unite.vim"]
+	path = vim/vimfiles/bundle/unite.vim
+	url = https://github.com/Shougo/unite.vim.git
+[submodule "vim/vimfiles/bundle/vim-togglelist"]
+	path = vim/vimfiles/bundle/vim-togglelist
+	url = https://github.com/milkypostman/vim-togglelist.git

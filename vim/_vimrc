@@ -52,6 +52,7 @@ let g:ctrlp_extensions = ['undo', 'line', 'mixed', 'buffertag']
 let g:ctrlp_cmd = 'CtrlPMRU'
 
 set visualbell
+set wildignore+=tags,*.gch
 
 let mapleader = "\<space>"
 let maplocalleader = "\\"
@@ -67,6 +68,20 @@ nnoremap <c-j> 4<c-e>
 nnoremap <c-k> 4<c-y>
 nnoremap <a-j> 10j
 nnoremap <a-k> 10k
+nnoremap <leader>c :close<cr>
+
+" set up quickfix/location list window mappings
+let g:toggle_list_no_mappings = 1
+nnoremap <silent> <leader>ll :call ToggleLocationList()<CR>
+nnoremap <silent> <leader>qq :call ToggleQuickfixList()<CR>
+nnoremap <leader>ln :lnewer<cr>
+nnoremap <leader>lo :lolder<cr>
+nnoremap <leader>qn :cnewer<cr>
+nnoremap <leader>qo :colder<cr>
+
+" set up gtags.vim
+let g:Gtags_OpenQuickfixWindow = 0
+nnoremap <leader>] :GtagsCursor<cr>
 
 " map <leader>f <Plug>(easymotion-f)
 map <leader>f <Plug>(easymotion-bd-f)
@@ -81,10 +96,6 @@ map <leader>B <Plug>(easymotion-B)
 map <leader>j <Plug>(easymotion-j)
 map <leader>k <Plug>(easymotion-k)
 map <leader>ma <Plug>(easymotion-jumptoanywhere)
-
-" use [<space> and ]<space> from unimpaired instead
-"nnoremap <silent><a-o> :set paste<CR>m`o<Esc>``:set nopaste<CR>
-"nnoremap <silent><leader>o :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
 if has('win32')
 	nnoremap <leader>cdw :cd D:\work<cr>
