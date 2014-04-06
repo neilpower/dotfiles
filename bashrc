@@ -4,7 +4,7 @@ function mcd() {
 }
 export -f mcd
 
-export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[0m\]\$ '
+export PS1='$SHANE_SHELL\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[0m\]\$ '
 
 # set LS_COLORS
 if [ -r ~/dotfiles-work/dircolors ]; then
