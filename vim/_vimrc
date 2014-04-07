@@ -60,7 +60,7 @@ let g:ctrlp_cmd = 'CtrlPMRU'
 set visualbell
 set wildignore+=tags,*.gch
 
-let mapleader = "\<space>"
+let mapleader = "\<tab>"
 let maplocalleader = "\\"
 nnoremap <leader>el :execute getline('.')<cr>
 nnoremap <leader>cl :let @l=expand('%:p') . ":" . line('.') . "\n -> " . getline('.') . "\n\n"<cr>
