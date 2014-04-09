@@ -53,6 +53,9 @@ else
 endif
 " let Tlist_Use_Right_Window = 1
 
+" look for tags files in current directory and two levels up as well
+set tags=./tags,./../tags,./../../tags
+
 " configure ctrlp
 let g:ctrlp_extensions = ['undo', 'line', 'mixed', 'buffertag']
 let g:ctrlp_cmd = 'CtrlPMRU'
@@ -60,7 +63,7 @@ let g:ctrlp_cmd = 'CtrlPMRU'
 set visualbell
 set wildignore+=tags,*.gch
 
-let mapleader = "\<tab>"
+let mapleader = "\<space>"
 let maplocalleader = "\\"
 nnoremap <leader>el :execute getline('.')<cr>
 nnoremap <leader>cl :let @l=expand('%:p') . ":" . line('.') . "\n -> " . getline('.') . "\n\n"<cr>
@@ -74,7 +77,8 @@ nnoremap <c-j> 4<c-e>
 nnoremap <c-k> 4<c-y>
 nnoremap <a-j> 10j
 nnoremap <a-k> 10k
-nnoremap <leader>c :close<cr>
+" Use <c-w>c instead
+" nnoremap <leader>c :close<cr>
 
 " set up quickfix/location list window mappings
 let g:toggle_list_no_mappings = 1
@@ -105,17 +109,19 @@ map <leader>ma <Plug>(easymotion-jumptoanywhere)
 
 if has('win32')
 	nnoremap <leader>cdw :cd D:\work<cr>
+	nnoremap <leader>qcd :cd $ACDS_SRC_ROOT\quartus<cr>
 	nnoremap <leader>nt :NERDTree D:\work<cr>
 	nnoremap <leader>ct :ConqueTerm C:\Windows\System32\cmd.exe /k S:\tools\acds_bri\arc_shortcut.bat<cr>
 else
 	nnoremap <leader>cdw :cd /data/soconnel/work<cr>
+	nnoremap <leader>qcd :cd $ACDS_SRC_ROOT/quartus<cr>
 	nnoremap <leader>nt :NERDTree /data/soconnel/work<cr>
 	nnoremap <leader>ct :ConqueTerm bash<cr>
 endif
 
 " use `w to control window stuff instead of <c-w>
-nnoremap `w <c-w>
-nnoremap <c-w> <nop>
+" nnoremap `w <c-w>
+" nnoremap <c-w> <nop>
 
 " use jk to exit insert/visual mode
 inoremap jk <esc>
