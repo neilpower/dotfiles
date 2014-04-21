@@ -7,6 +7,8 @@ if has('gui_running')
     set guioptions-=T " remove toolbar
     set guioptions-=r " remove right-hand scroll bar
     set guioptions-=L " remove left-hand scroll bar
+    set guioptions-=e " use text-based tabs instead of GUI tabs
+
     " toggle menu bar with <c-f1>
     nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
 else
@@ -66,13 +68,15 @@ set wildignore+=tags,*.gch
 let mapleader = "\<space>"
 let maplocalleader = "\\"
 nnoremap <leader>el :execute getline('.')<cr>
-nnoremap <leader>cl :let @l=expand('%:p') . ":" . line('.') . "\n -> " . getline('.') . "\n\n"<cr>
+nnoremap <leader>cl :let @l="- [" . expand('%:t') . ":" . line('.') . "]\n- " . getline('.') . "\n"<cr>
 nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
 nnoremap <leader>w- O<esc>80i-<esc>j^
 nnoremap <leader>tl :TlistToggle<cr>
 nnoremap <leader>hl :nohlsearch<cr>
 nnoremap <leader>msg O::msg_vdebug("shane: 
+nnoremap <c-l> 6zl
+nnoremap <c-h> 6zh
 nnoremap <c-j> 4<c-e>
 nnoremap <c-k> 4<c-y>
 nnoremap <a-j> 10j
@@ -137,3 +141,16 @@ endif
 
 " fix tab completion to make sense
 set wildmode=longest,list,full
+
+" handle quartus.ini files
+augroup quartusini
+    au!
+    au BufNewFile,BufRead quartus.ini setlocal filetype=quartusini
+    au FileType quartusini setlocal commentstring="# %s"
+augroup END
+
+augroup sdc_files
+    autocmd!
+    autocmd FileType sdc setlocal commentstring=#\ %s
+augroup END
+
