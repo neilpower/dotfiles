@@ -28,3 +28,9 @@
 [submodule "vim/vimfiles/bundle/YouCompleteMe"]
 	path = vim/vimfiles/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/vimfiles/bundle/vim-sleuth"]
+	path = vim/vimfiles/bundle/vim-sleuth
+	url = https://github.com/tpope/vim-sleuth.git
+[submodule "vim/vimfiles/bundle/sudo.vim"]
+	path = vim/vimfiles/bundle/sudo.vim
+	url = https://github.com/vim-scripts/sudo.vim.git

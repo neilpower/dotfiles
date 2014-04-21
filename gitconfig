@@ -1,3 +1,7 @@
 [user]
 	name = Shane O'Connell
 	email = shane@oconnell.cc
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
