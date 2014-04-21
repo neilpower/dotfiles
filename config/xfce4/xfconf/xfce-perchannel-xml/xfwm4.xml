@@ -47,7 +47,7 @@
     <property name="title_vertical_offset_inactive" type="empty"/>
     <property name="urgent_blink" type="empty"/>
     <property name="wrap_resistance" type="empty"/>
-    <property name="wrap_windows" type="empty"/>
+    <property name="wrap_windows" type="bool" value="false"/>
     <property name="wrap_workspaces" type="empty"/>
     <property name="double_click_time" type="empty"/>
     <property name="double_click_distance" type="empty"/>
