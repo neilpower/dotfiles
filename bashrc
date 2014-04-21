@@ -1,3 +1,5 @@
+set -o vi
+
 function mcd() {
 	mkdir -p "$@"
 	cd "$@"
