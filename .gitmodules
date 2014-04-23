@@ -25,9 +25,6 @@
 [submodule "vim/vimfiles/bundle/vim-togglelist"]
 	path = vim/vimfiles/bundle/vim-togglelist
 	url = https://github.com/milkypostman/vim-togglelist.git
-[submodule "vim/vimfiles/bundle/YouCompleteMe"]
-	path = vim/vimfiles/bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "vim/vimfiles/bundle/vim-sleuth"]
 	path = vim/vimfiles/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth.git
