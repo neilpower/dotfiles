@@ -1,4 +1,4 @@
-q W E R T y u i o p
+q W E R T y u i o P
 a S D F G h j k L
 Z X C V B n M
 
@@ -6,6 +6,7 @@ W -> web browser
 B -> file browser
 T -> terminal
 V -> vim
+P -> keepassx
 X -> open wiskermenu
 C -> close window
 L -> lock
