@@ -1,0 +1,17 @@
+q W E R T y u i o p
+a S D F G h j k L
+Z X C V B n M
+
+W -> web browser
+B -> file browser
+T -> terminal
+V -> vim
+X -> open wiskermenu
+C -> close window
+L -> lock
+Z -> Maximize window
+M -> music player (nuvolaplayer)
+
+D F -> move current window to left/right side of current desktop
+E R -> move current window to left/right dektop
+S G -> change current dektop left/right
