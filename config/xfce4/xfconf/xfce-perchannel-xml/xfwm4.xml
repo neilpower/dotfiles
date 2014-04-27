@@ -5,10 +5,17 @@
     <property name="frame_opacity" type="empty"/>
     <property name="show_frame_shadow" type="empty"/>
     <property name="show_popup_shadow" type="empty"/>
-    <property name="theme" type="empty"/>
+    <property name="theme" type="string" value="Numix"/>
     <property name="use_compositing" type="empty"/>
-    <property name="workspace_count" type="empty"/>
-    <property name="workspace_names" type="empty"/>
+    <property name="workspace_count" type="int" value="4"/>
+    <property name="workspace_names" type="array">
+      <value type="string" value="1"/>
+      <value type="string" value="2"/>
+      <value type="string" value="3"/>
+      <value type="string" value="4"/>
+      <value type="string" value="5"/>
+      <value type="string" value="Workspace 6"/>
+    </property>
     <property name="activate_action" type="empty"/>
     <property name="box_move" type="empty"/>
     <property name="box_resize" type="empty"/>
