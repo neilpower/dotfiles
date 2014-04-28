@@ -7,7 +7,9 @@
       <property name="length" type="uint" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
       <property name="plugin-ids" type="array">
+        <value type="int" value="11"/>
         <value type="int" value="1"/>
+        <value type="int" value="10"/>
         <value type="int" value="2"/>
         <value type="int" value="3"/>
         <value type="int" value="4"/>
@@ -18,7 +20,7 @@
         <value type="int" value="7"/>
       </property>
       <property name="background-style" type="uint" value="0"/>
-      <property name="background-alpha" type="uint" value="80"/>
+      <property name="background-alpha" type="uint" value="100"/>
       <property name="size" type="uint" value="24"/>
       <property name="autohide" type="bool" value="false"/>
       <property name="length-adjust" type="bool" value="true"/>
@@ -34,6 +36,9 @@
       <property name="flat-buttons" type="bool" value="true"/>
       <property name="show-handle" type="bool" value="false"/>
       <property name="grouping" type="uint" value="0"/>
+      <property name="sort-order" type="uint" value="4"/>
+      <property name="show-labels" type="bool" value="true"/>
+      <property name="show-wireframes" type="bool" value="true"/>
     </property>
     <property name="plugin-3" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
@@ -43,12 +48,17 @@
       <property name="show-frame" type="bool" value="false"/>
       <property name="size-max" type="uint" value="22"/>
       <property name="names-visible" type="array">
-        <value type="string" value="xfce4-power-manager"/>
-        <value type="string" value="google chrome"/>
-        <value type="string" value="exe"/>
+        <value type="string" value="thunar"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="gigolo"/>
         <value type="string" value="blueman-applet"/>
         <value type="string" value="dropbox"/>
-        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="exe"/>
+        <value type="string" value="google chrome"/>
+      </property>
+      <property name="names-hidden" type="array">
       </property>
     </property>
     <property name="plugin-5" type="string" value="indicator">
@@ -61,6 +71,7 @@
         <value type="string" value="com.canonical.indicator.messages"/>
         <value type="string" value="com.canonical.indicator.sound"/>
       </property>
+      <property name="mode-whitelist" type="bool" value="false"/>
     </property>
     <property name="plugin-6" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
@@ -72,6 +83,14 @@
     <property name="plugin-8" type="string" value="weather"/>
     <property name="plugin-9" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-10" type="string" value="pager">
+      <property name="rows" type="uint" value="1"/>
+      <property name="miniature-view" type="bool" value="false"/>
+    </property>
+    <property name="plugin-11" type="string" value="windowmenu">
+      <property name="style" type="uint" value="1"/>
+      <property name="workspace-actions" type="bool" value="true"/>
     </property>
   </property>
   <property name="configver" type="int" value="2"/>
