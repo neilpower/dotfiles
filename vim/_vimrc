@@ -38,6 +38,23 @@ set hlsearch
 set ignorecase
 set smartcase
 
+" use very nomagic by default
+nnoremap / /\V
+vnoremap / /\V
+nnoremap ? ?\V
+vnoremap ? ?\V
+
+" keep search pattern at the center of the screen
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+nnoremap <silent> g# g#zz
+
+" make Y work like other capitals
+nnoremap Y y$
+
 " turn on folding using syntax
 set foldmethod=syntax
 
@@ -73,7 +90,7 @@ nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
 nnoremap <leader>w- O<esc>80i-<esc>j^
 nnoremap <leader>tl :TlistToggle<cr>
-nnoremap <leader>hl :nohlsearch<cr>
+nnoremap <silent><leader>/ :nohlsearch<cr>
 nnoremap <leader>msg O::msg_vdebug("shane: 
 nnoremap <c-l> 6zl
 nnoremap <c-h> 6zh
