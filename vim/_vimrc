@@ -5,7 +5,7 @@ set t_Co=256
 execute pathogen#infect()
 
 if has('gui_running')
-    colorscheme slate
+    " colorscheme slate
 
     set guioptions-=m " remove menu bar
     set guioptions-=T " remove toolbar
@@ -16,12 +16,15 @@ if has('gui_running')
     " toggle menu bar with <c-f1>
     nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
 else
-    colorscheme desert
+    " colorscheme desert
 endif
 
 if has('win32')
     set guifont=Consolas:h10:cANSI
 endif
+
+set background=dark
+colorscheme solarized
 
 set tabstop=4
 set shiftwidth=4
