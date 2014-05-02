@@ -1,3 +1,7 @@
+" Needed to show 256 colors when in tmux
+" http://bentomas.com/2012-03-28/256-colors-in-tmux.html
+set t_Co=256
+
 execute pathogen#infect()
 
 if has('gui_running')
