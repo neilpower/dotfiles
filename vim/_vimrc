@@ -12,6 +12,7 @@ if has('gui_running')
     set guioptions-=r " remove right-hand scroll bar
     set guioptions-=L " remove left-hand scroll bar
     set guioptions-=e " use text-based tabs instead of GUI tabs
+    set guioptions-=c " use console dialogs instead of GUI popup dialogs
 
     " toggle menu bar with <c-f1>
     nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
@@ -28,6 +29,16 @@ colorscheme solarized
 
 set tabstop=4
 set shiftwidth=4
+
+" if we have a mouse, use it
+if has('mouse')
+    set mouse=a
+endif
+
+" yank to system clipboard by default
+if has('unnamedplus')
+    set clipboard=unnamedplus,exclude:cons\|linux
+endif
 
 " allow edited files to be put in the background
 set hidden
