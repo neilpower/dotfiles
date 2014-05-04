@@ -37,3 +37,12 @@
 [submodule "dircolors-solarized"]
 	path = dircolors-solarized
 	url = https://github.com/huyz/dircolors-solarized.git
+[submodule "vim/vimfiles/bundle/vim-airline"]
+	path = vim/vimfiles/bundle/vim-airline
+	url = https://github.com/bling/vim-airline.git
+[submodule "vim/vimfiles/bundle/tmuxline.vim"]
+	path = vim/vimfiles/bundle/tmuxline.vim
+	url = https://github.com/edkolev/tmuxline.vim.git
+[submodule "powerline-fonts"]
+	path = powerline-fonts
+	url = https://github.com/Lokaltog/powerline-fonts.git
