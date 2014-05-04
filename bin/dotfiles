@@ -16,45 +16,51 @@ sync)
     git submodule update --init --recursive
 
     echo "Checking symlinks..."
-    for file in $(ls symlink); do
-        source=$HOME/.$file
-        target=$(pwd)/symlink/$file
+    for symlink_file in $(find $(pwd) -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?'); do
+        case $symlink_file in
+            *.sh) symlink_pairs=$(bash $symlink_file) ;;
+            *)    symlink_pairs="$HOME/.$(basename $symlink_file .symlink):$symlink_file" ;;
+        esac
 
-        if [ -L $source ]; then
-            current_target=$(readlink $source)
-            if [ $target != $current_target ]; then
+        for pair in $symlink_pairs; do
+            read source target <<< $(IFS=":"; echo $pair)
+
+            if [ -L $source ]; then
+                current_target=$(readlink $source)
+                if [ $target != $current_target ]; then
+                    echo ""
+                    echo "Symlink: $source"
+                    echo "New Target: $target"
+                    echo "Current target: $current_target"
+                    echo -n "Update symlink? [y/N] "
+                    read yn
+                    if [ "$yn" = "y" -o "$yn" = "Y" ]; then
+                        rm $source
+                        echo "Linking $(basename $source) to ${target}"
+                        ln -s $target $source
+                    fi
+                else
+                    echo "$(basename $source) is correctly linked to ${target}"
+                fi
+            elif [ -e $source ]; then
                 echo ""
                 echo "Symlink: $source"
                 echo "Target: $target"
-                echo "Current target: $current_target"
-                echo -n "Update symlink? [y/N] "
+                echo -n "File already exists, move it to $(basename $source).bak? [y/N] "
                 read yn
                 if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                    rm $source
+                    mv $source ${source}.bak
                     echo "Linking $(basename $source) to ${target}"
                     ln -s $target $source
                 fi
             else
-                echo "$(basename $source) is correctly linked to ${target}"
-            fi
-        elif [ -e $source ]; then
-            echo ""
-            echo "Symlink: $source"
-            echo "Target: $target"
-            echo -n "File already exists, move it to $(basename $source).bak? [y/N] "
-            read yn
-            if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                mv $source ${source}.bak
                 echo "Linking $(basename $source) to ${target}"
                 ln -s $target $source
             fi
-        else
-            echo "Linking $(basename $source) to ${target}"
-            ln -s $target $source
-        fi
+        done
     done
 
-    for file in $(find $HOME -maxdepth 1 -type l -name '.*'); do
+    for file in $(find $HOME -maxdepth 1 -type l); do
         if [ ! -e $file ]; then
             echo -n "Found broken symlink $(basename $file) -> "
             echo -n "$(readlink $file) in HOME, delete it? [y/N] "
