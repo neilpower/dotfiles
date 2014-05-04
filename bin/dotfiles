@@ -18,13 +18,13 @@ sync)
     git submodule update --init --recursive
 
     echo "Checking symlinks..."
-    find $(pwd) -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?' -print0 | while read -d '' -r symlink_file; do
+    while read -d '' -r symlink_file <&9; do
         case "$symlink_file" in
-            *.sh) symlink_pairs="$(bash "$symlink_file")" ;;
+            *.sh) symlink_pairs="$(bash "$symlink_file")$NL" ;;
             *)    symlink_pairs="$HOME/.$(basename "$symlink_file" .symlink):$symlink_file$NL" ;;
         esac
 
-        echo -n "$symlink_pairs" | while read -r pair; do
+        while read -r pair <&8; do
             IFS=':' read -r source target <<< "$pair"
             source_short="${source#$HOME/}"
             mkdir -p $(dirname "$target")
@@ -44,7 +44,7 @@ sync)
                         ln -s "$target" "$source"
                     fi
                 else
-                    echo "$source_short is correctly linked to $target"
+                    echo "$source_short is correctly linked"
                 fi
             elif [ -e "$source" ]; then
                 echo ""
@@ -61,8 +61,8 @@ sync)
                 echo "Linking $source_short to $target"
                 ln -s "$target" "$source"
             fi
-        done
-    done
+        done 8< <(echo -n "$symlink_pairs")
+    done 9< <(find $(pwd) -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?' -print0)
 
     while read -d '' -r file <&9; do
         if [ ! -e "$file" ]; then
