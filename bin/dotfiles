@@ -65,21 +65,12 @@ sync)
         fi
     done
     ;;
-status)
-    shift
-    git status "$@"
+status|commit|diff|add)
+    git "$@"
     ;;
-commit)
-    shift
-    git commit "$@"
+*)
+    echo "Error: unknown argument: $1"
+    exit 1
     ;;
-diff)
-    shift
-    git diff "$@"
-    ;;
-add)
-    shift
-    git add "$@"
 esac
-
 
