@@ -1,0 +1,85 @@
+#!/bin/bash
+set -e
+
+if [ $# -lt 1 ]; then
+    echo "Error: argument required"
+    exit 1
+fi
+
+# go to dotfiles directory
+cd $(dirname $0)/..
+
+case "$1" in
+sync)
+    echo "Updating from git..."
+    git pull
+    git submodule update --init --recursive
+
+    echo "Checking symlinks..."
+    for file in $(ls symlink); do
+        source=$HOME/.$file
+        target=$(pwd)/symlink/$file
+
+        if [ -L $source ]; then
+            current_target=$(readlink $source)
+            if [ $target != $current_target ]; then
+                echo ""
+                echo "Symlink: $source"
+                echo "Target: $target"
+                echo "Current target: $current_target"
+                echo -n "Update symlink? [y/N] "
+                read yn
+                if [ "$yn" = "y" -o "$yn" = "Y" ]; then
+                    rm $source
+                    echo "Linking $(basename $source) to ${target}"
+                    ln -s $target $source
+                fi
+            else
+                echo "$(basename $source) is correctly linked to ${target}"
+            fi
+        elif [ -e $source ]; then
+            echo ""
+            echo "Symlink: $source"
+            echo "Target: $target"
+            echo -n "File already exists, move it to $(basename $source).bak? [y/N] "
+            read yn
+            if [ "$yn" = "y" -o "$yn" = "Y" ]; then
+                mv $source ${source}.bak
+                echo "Linking $(basename $source) to ${target}"
+                ln -s $target $source
+            fi
+        else
+            echo "Linking $(basename $source) to ${target}"
+            ln -s $target $source
+        fi
+    done
+
+    for file in $(find $HOME -maxdepth 1 -type l -name '.*'); do
+        if [ ! -e $file ]; then
+            echo -n "Found broken symlink $(basename $file) -> "
+            echo -n "$(readlink $file) in HOME, delete it? [y/N] "
+            read yn
+            if [ "$yn" = "y" -o "$yn" = "Y" ]; then
+                rm $file
+            fi
+        fi
+    done
+    ;;
+status)
+    shift
+    git status "$@"
+    ;;
+commit)
+    shift
+    git commit "$@"
+    ;;
+diff)
+    shift
+    git diff "$@"
+    ;;
+add)
+    shift
+    git add "$@"
+esac
+
+
