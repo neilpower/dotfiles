@@ -44,5 +44,5 @@
 	path = vim/vimfiles/bundle/tmuxline.vim
 	url = https://github.com/edkolev/tmuxline.vim.git
 [submodule "powerline-fonts"]
-	path = powerline-fonts
+	path = base/powerline-fonts
 	url = https://github.com/Lokaltog/powerline-fonts.git

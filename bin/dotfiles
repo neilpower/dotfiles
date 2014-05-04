@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+NL=$'\n'
+
 if [ $# -lt 1 ]; then
     echo "Error: argument required"
     exit 1
@@ -16,18 +18,20 @@ sync)
     git submodule update --init --recursive
 
     echo "Checking symlinks..."
-    for symlink_file in $(find $(pwd) -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?'); do
-        case $symlink_file in
-            *.sh) symlink_pairs=$(bash $symlink_file) ;;
-            *)    symlink_pairs="$HOME/.$(basename $symlink_file .symlink):$symlink_file" ;;
+    find $(pwd) -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?' -print0 | while read -d '' -r symlink_file; do
+        case "$symlink_file" in
+            *.sh) symlink_pairs="$(bash "$symlink_file")" ;;
+            *)    symlink_pairs="$HOME/.$(basename "$symlink_file" .symlink):$symlink_file$NL" ;;
         esac
 
-        for pair in $symlink_pairs; do
-            read source target <<< $(IFS=":"; echo $pair)
+        echo -n "$symlink_pairs" | while read -r pair; do
+            IFS=':' read -r source target <<< "$pair"
+            source_short="${source#$HOME/}"
+            mkdir -p $(dirname "$target")
 
-            if [ -L $source ]; then
-                current_target=$(readlink $source)
-                if [ $target != $current_target ]; then
+            if [ -L "$source" ]; then
+                current_target=$(readlink "$source")
+                if [ "$target" != "$current_target" ]; then
                     echo ""
                     echo "Symlink: $source"
                     echo "New Target: $target"
@@ -35,41 +39,43 @@ sync)
                     echo -n "Update symlink? [y/N] "
                     read yn
                     if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                        rm $source
-                        echo "Linking $(basename $source) to ${target}"
-                        ln -s $target $source
+                        rm "$source"
+                        echo "Linking $source_short to $target"
+                        ln -s "$target" "$source"
                     fi
                 else
-                    echo "$(basename $source) is correctly linked to ${target}"
+                    echo "$source_short is correctly linked to $target"
                 fi
-            elif [ -e $source ]; then
+            elif [ -e "$source" ]; then
                 echo ""
                 echo "Symlink: $source"
                 echo "Target: $target"
-                echo -n "File already exists, move it to $(basename $source).bak? [y/N] "
+                echo -n "File already exists, move it to ${source_short}.bak? [y/N] "
                 read yn
                 if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                    mv $source ${source}.bak
-                    echo "Linking $(basename $source) to ${target}"
-                    ln -s $target $source
+                    mv "$source" "${source}.bak"
+                    echo "Linking $source_short to $target"
+                    ln -s "$target" "$source"
                 fi
             else
-                echo "Linking $(basename $source) to ${target}"
-                ln -s $target $source
+                echo "Linking $source_short to $target"
+                ln -s "$target" "$source"
             fi
         done
     done
 
-    for file in $(find $HOME -maxdepth 1 -type l); do
-        if [ ! -e $file ]; then
-            echo -n "Found broken symlink $(basename $file) -> "
-            echo -n "$(readlink $file) in HOME, delete it? [y/N] "
+    while read -d '' -r file <&9; do
+        if [ ! -e "$file" ]; then
+            echo -n "Found broken symlink ${file#$HOME/} -> "
+            echo -n "$(readlink "$file") in HOME, delete it? [y/N] "
             read yn
             if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                rm $file
+                rm "$file"
             fi
         fi
-    done
+    done 9< <(find "$HOME" "$HOME/.fonts" "$HOME/.config" -maxdepth 1 -type l -print0)
+
+    # fc-cache -vf ~/.fonts
     ;;
 status|commit|diff|add)
     git "$@"
