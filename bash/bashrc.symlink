@@ -1,0 +1,14 @@
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# Get path to dotfiles directory
+script_path="$(readlink -f "${BASH_SOURCE[0]}")"
+dotfiles_dir="$(dirname "$(dirname "$script_path")")"
+
+# Source all *.bashrc files
+while read -d '' -r bashrc_file <&9; do
+    source "$bashrc_file"
+done 9< <(find "$dotfiles_dir" -mindepth 2 -maxdepth 2 -regex '.*\.bashrc' -print0)
