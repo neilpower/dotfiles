@@ -27,3 +27,8 @@ dotfiles_dir="$(dirname "$(dirname "$script_path")")"
 while read -d '' -r bashrc_file <&9; do
     source "$bashrc_file"
 done 9< <(find $dotfiles_dir ${dotfiles_dir}.* -mindepth 2 -maxdepth 2 -regex '.*\.bashrc\.sh' -print0)
+
+# Remove the path helper functions
+unset path_remove
+unset path_prepend
+unset path_append
