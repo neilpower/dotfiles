@@ -4,6 +4,7 @@ export POWERLINE_FONT=1
 
 function powerline_font {
     if [ $# -ne 1 ]; then
+        echo "Currently, POWERLINE_FONT is set to $POWERLINE_FONT"
         read -r -p 'Do you have the powerline font installed? [Y/n] ' yn
         if [ -z "$yn" ]; then
             export POWERLINE_FONT=1
