@@ -81,7 +81,7 @@ sync)
 
     # fc-cache -vf ~/.fonts
     ;;
-status|commit|diff|add)
+status|commit|diff|add|push)
     git "$@"
     ;;
 *)
