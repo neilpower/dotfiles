@@ -1,3 +1,5 @@
+# vim: ft=sh et sw=4 ts=4
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -11,4 +13,4 @@ dotfiles_dir="$(dirname "$(dirname "$script_path")")"
 # Source all *.bashrc.sh files
 while read -d '' -r bashrc_file <&9; do
     source "$bashrc_file"
-done 9< <(find "$dotfiles_dir" -mindepth 2 -maxdepth 2 -regex '.*\.bashrc\.sh' -print0)
+done 9< <(find $dotfiles_dir ${dotfiles_dir}.* -mindepth 2 -maxdepth 2 -regex '.*\.bashrc\.sh' -print0)
