@@ -1,2 +1,5 @@
-echo "$HOME/.vimrc:$(dirname "$0")/_vimrc"
-echo "$HOME/.vim:$(dirname "$0")/vimfiles"
+script_path="$(readlink -f "${BASH_SOURCE[0]}")"
+vim_dir="$(dirname "$script_path")"
+
+register_symlink "$HOME/.vimrc" "$vim_dir/_vimrc"
+register_symlink "$HOME/.vim" "$vim_dir/vimfiles"

@@ -1,7 +1,7 @@
 #!/bin/bash
-set -e
+# vim: et sw=4 ts=4
 
-NL=$'\n'
+set -e
 
 if [ $# -lt 1 ]; then
     echo "Error: argument required"
@@ -9,7 +9,50 @@ if [ $# -lt 1 ]; then
 fi
 
 # go to dotfiles directory
-cd $(dirname $0)/..
+script_path="$(readlink -f "${BASH_SOURCE[0]}")"
+cd "$(dirname "$script_path")/.."
+
+register_symlink ()
+{
+    source="$1"
+    target="$2"
+
+    source_short="${source#$HOME/}"
+    mkdir -p "$(dirname "$target")"
+
+    if [ -L "$source" ]; then
+        current_target="$(readlink "$source")"
+        if [ "$target" != "$current_target" ]; then
+            echo ""
+            echo "Symlink: $source"
+            echo "New Target: $target"
+            echo "Current target: $current_target"
+            echo -n "Update symlink? [y/N] "
+            read yn
+            if [ "$yn" = "y" -o "$yn" = "Y" ]; then
+                rm "$source"
+                echo "Linking $source_short to $target"
+                ln -s "$target" "$source"
+            fi
+        else
+            echo "$source_short is correctly linked"
+        fi
+    elif [ -e "$source" ]; then
+        echo ""
+        echo "Symlink: $source"
+        echo "Target: $target"
+        echo -n "File already exists, move it to ${source_short}.bak? [y/N] "
+        read yn
+        if [ "$yn" = "y" -o "$yn" = "Y" ]; then
+            mv "$source" "${source}.bak"
+            echo "Linking $source_short to $target"
+            ln -s "$target" "$source"
+        fi
+    else
+        echo "Linking $source_short to $target"
+        ln -s "$target" "$source"
+    fi
+}
 
 case "$1" in
 sync)
@@ -20,54 +63,15 @@ sync)
     echo "Checking symlinks..."
     while read -d '' -r symlink_file <&9; do
         case "$symlink_file" in
-            *.sh) symlink_pairs="$(bash "$symlink_file")$NL" ;;
-            *)    symlink_pairs="$HOME/.$(basename "$symlink_file" .symlink):$symlink_file$NL" ;;
+        *.sh) source "$symlink_file" ;;
+        *)    register_symlink "$HOME/.$(basename "$symlink_file" .symlink)" "$symlink_file" ;;
         esac
-
-        while read -r pair <&8; do
-            IFS=':' read -r source target <<< "$pair"
-            source_short="${source#$HOME/}"
-            mkdir -p $(dirname "$target")
-
-            if [ -L "$source" ]; then
-                current_target=$(readlink "$source")
-                if [ "$target" != "$current_target" ]; then
-                    echo ""
-                    echo "Symlink: $source"
-                    echo "New Target: $target"
-                    echo "Current target: $current_target"
-                    echo -n "Update symlink? [y/N] "
-                    read yn
-                    if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                        rm "$source"
-                        echo "Linking $source_short to $target"
-                        ln -s "$target" "$source"
-                    fi
-                else
-                    echo "$source_short is correctly linked"
-                fi
-            elif [ -e "$source" ]; then
-                echo ""
-                echo "Symlink: $source"
-                echo "Target: $target"
-                echo -n "File already exists, move it to ${source_short}.bak? [y/N] "
-                read yn
-                if [ "$yn" = "y" -o "$yn" = "Y" ]; then
-                    mv "$source" "${source}.bak"
-                    echo "Linking $source_short to $target"
-                    ln -s "$target" "$source"
-                fi
-            else
-                echo "Linking $source_short to $target"
-                ln -s "$target" "$source"
-            fi
-        done 8< <(echo -n "$symlink_pairs")
-    done 9< <(find $(pwd) -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?' -print0)
+    done 9< <(find $(pwd) $(pwd).* -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?' -print0)
 
     while read -d '' -r file <&9; do
         if [ ! -e "$file" ]; then
             echo -n "Found broken symlink ${file#$HOME/} -> "
-            echo -n "$(readlink "$file") in HOME, delete it? [y/N] "
+            echo -n "$(readlink "$file"), delete it? [y/N] "
             read yn
             if [ "$yn" = "y" -o "$yn" = "Y" ]; then
                 rm "$file"
