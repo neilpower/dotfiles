@@ -3,10 +3,13 @@
 set t_Co=256
 
 " configure airline
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = ($POWERLINE_FONT == '1') ? 1 : 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#tab_min_count = 2
+
+" configure tmuxline
+let g:tmuxline_powerline_separators = ($POWERLINE_FONT == '1') ? 1 : 0
 
 execute pathogen#infect()
 
