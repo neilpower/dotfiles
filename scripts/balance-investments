@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+import re
+
+fund_names = ['TDB900', 'TDB902', 'TDB909', 'TDB911', 'TDB164', 'cash']
+desired_ratio = [25, 25, 25, 25, 0, 0]
+
+def input_cents(prompt):
+    m = re.match(r'^([\d,]+)\.(\d\d)$', input(prompt))
+    if m == None:
+        sys.exit('Error: invalid amount' + str(s))
+    return int(m.group(1).replace(',','')) * 100 + int(m.group(2))
+
+def print_cents(c):
+    minus = '-' if c < 0 else ''
+    return '${}{}.{:02}'.format(minus, abs(c)//100, abs(c)%100)
+
+class AmountCalc:
+    def __init__(self):
+        self.get_inputs()
+        self.calc_amount_changed()
+        # self.calc_transfer_amounts()
+        self.print_results()
+
+    def get_inputs(self):
+        self.current_amounts = [
+                input_cents("What's the balance of {}? ".format(fund))
+                for fund in fund_names]
+        self.total = sum(self.current_amounts)
+
+    def calc_amount_changed(self):
+        total_ratio = sum(desired_ratio)
+        self.new_amounts = [(self.total * ratio) // total_ratio for ratio
+                in desired_ratio]
+
+        left_over = self.total - sum(self.new_amounts)
+        self.new_amounts = [new_amount + (1 if i < left_over else 0)
+                for i, new_amount in enumerate(self.new_amounts)]
+
+        self.amount_changed = [new - current for new, current in
+                zip(self.new_amounts, self.current_amounts)]
+        print(repr(self.new_amounts), repr(self.current_amounts), repr(self.amount_changed))
+
+        assert sum(self.new_amounts) == self.total
+        assert sum(self.amount_changed) == 0
+
+    def calc_transfer_amounts(self):
+        mm = self.mm_amount
+        cash = self.cash_amount
+        self.transfer_from_cash = []
+        self.transfer_from_mm = []
+
+        for amount in self.amount_changed:
+            mm_transfer = min(amount, mm)
+            self.transfer_from_mm.append(mm_transfer)
+            amount -= mm_transfer
+            mm -= mm_transfer
+
+            cash_transfer = min(amount, cash)
+            self.transfer_from_cash.append(cash_transfer)
+            amount -= cash_transfer
+            cash -= cash_transfer
+
+            assert amount == 0
+
+        assert sum(self.transfer_from_cash) == self.cash_amount
+        assert sum(self.transfer_from_mm) == self.mm_amount
+
+    def print_results(self):
+        print('total: {}'.format(print_cents(self.total)))
+        for name, current, new, changed in zip(fund_names, self.current_amounts,
+                self.new_amounts, self.amount_changed):
+            print('{}: {} -> {}: {}'.format(name, print_cents(current),
+                print_cents(new), print_cents(changed)))
+
+AmountCalc()
