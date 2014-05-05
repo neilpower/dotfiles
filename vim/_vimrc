@@ -62,6 +62,9 @@ set hlsearch
 set ignorecase
 set smartcase
 
+" turn on modeline
+set modeline
+
 " use very nomagic by default
 nnoremap / /\V
 vnoremap / /\V
