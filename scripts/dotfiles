@@ -18,7 +18,7 @@ register_symlink ()
     target="$2"
 
     source_short="${source#$HOME/}"
-    mkdir -p "$(dirname "$target")"
+    mkdir -p "$(dirname "$source")"
 
     if [ -L "$source" ]; then
         current_target="$(readlink "$source")"
