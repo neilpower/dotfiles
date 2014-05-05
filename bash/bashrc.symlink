@@ -19,16 +19,21 @@ path_remove () {
 path_prepend () { path_remove "$1"; export PATH="$1:$PATH"; }
 path_append ()  { path_remove "$1"; export PATH="$PATH:$1"; }
 
-# Get path to dotfiles directory
-script_path="$(readlink -f "${BASH_SOURCE[0]}")"
-dotfiles_dir="$(dirname "$(dirname "$script_path")")"
+# Wrap in a function in order to avoid leaking local variables
+source_files () {
+    # Get path to dotfiles directory
+    local script_path="$(readlink -f "${BASH_SOURCE[0]}")"
+    local dotfiles_dir="$(dirname "$(dirname "$script_path")")"
 
-# Source all *.bashrc.sh files
-while read -d '' -r bashrc_file <&9; do
-    source "$bashrc_file"
-done 9< <(find $dotfiles_dir ${dotfiles_dir}.* -mindepth 2 -maxdepth 2 -regex '.*\.bashrc\.sh' -print0)
+    # Source all *.bashrc.sh files
+    while read -d '' -r bashrc_file <&9; do
+        source "$bashrc_file"
+    done 9< <(find $dotfiles_dir ${dotfiles_dir}.* -mindepth 2 -maxdepth 2 -regex '.*\.bashrc\.sh' -print0)
+}
+source_files
 
-# Remove the path helper functions
+# Remove stuff I don't need in the shell
 unset path_remove
 unset path_prepend
 unset path_append
+unset source_files
