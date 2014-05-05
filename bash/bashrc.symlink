@@ -6,6 +6,19 @@ case $- in
       *) return;;
 esac
 
+# Define helper functions for *.bashrc.sh scripts to use
+path_remove () {
+    tmp=":$PATH:"
+    while [[ "$tmp" =~ ":$1:" ]]; do
+        tmp="${tmp/:$1:/:}"
+    done
+    tmp="${tmp%:}"
+    tmp="${tmp#:}"
+    export PATH="$tmp"
+}
+path_prepend () { path_remove "$1"; export PATH="$1:$PATH"; }
+path_append ()  { path_remove "$1"; export PATH="$PATH:$1"; }
+
 # Get path to dotfiles directory
 script_path="$(readlink -f "${BASH_SOURCE[0]}")"
 dotfiles_dir="$(dirname "$(dirname "$script_path")")"
