@@ -6,4 +6,4 @@
 [merge]
 	tool = vimdiff
 [core]
-	excludesfile = /home/soconnel/.gitignore_global
+	excludesfile = ~/.gitignore_global
