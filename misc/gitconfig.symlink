@@ -5,3 +5,5 @@
 	tool = vimdiff
 [merge]
 	tool = vimdiff
+[core]
+	excludesfile = /home/soconnel/.gitignore_global
