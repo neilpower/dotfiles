@@ -1,4 +1,5 @@
 " vim: et sw=4 ts=4
+execute pathogen#infect()
 
 " Needed to show 256 colors when in tmux
 " http://bentomas.com/2012-03-28/256-colors-in-tmux.html
@@ -21,6 +22,8 @@ let g:tmuxline_preset = {
     \'y'       : ['%Y-%m-%d', '%I:%M %P'],
     \'z'       : '#H',
     \'options' : {'status-justify' : 'left'}}
+" NOTE: if the tmuxline preset is changed, run TmuxlineSnapshot to update
+" ~/dotfiles/misc/tmux-tmuxline.conf.symlink
 
 " configure tmux navigator
 let g:tmux_navigator_no_mappings = 1
@@ -35,8 +38,7 @@ nnoremap <c-w>k <nop>
 nnoremap <c-w>l <nop>
 nnoremap <c-w>c <nop>
 
-execute pathogen#infect()
-
+" configure colorscheme
 set background=dark
 colorscheme solarized
 

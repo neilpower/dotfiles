@@ -28,3 +28,6 @@ bind j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\
 bind k run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a k) || tmux select-pane -U"
 bind l run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a l) || tmux select-pane -R"
 bind x run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a x) || tmux kill-pane"
+
+# source tmuxline colors so that I see them before opening vim
+source-file ~/.tmux-tmuxline.conf
