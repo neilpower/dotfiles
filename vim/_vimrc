@@ -1,21 +1,46 @@
+" vim: et sw=4 ts=4
+
 " Needed to show 256 colors when in tmux
 " http://bentomas.com/2012-03-28/256-colors-in-tmux.html
 set t_Co=256
 
+let powerline_font = ($POWERLINE_FONT == '1' && !has('gui_running'))
+
 " configure airline
-let g:airline_powerline_fonts = ($POWERLINE_FONT == '1') ? 1 : 0
+let g:airline_powerline_fonts = powerline_font
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#tab_min_count = 2
 
 " configure tmuxline
-let g:tmuxline_powerline_separators = ($POWERLINE_FONT == '1') ? 1 : 0
+let g:tmuxline_powerline_separators = powerline_font
+let g:tmuxline_preset = {
+    \'a'       : '#S',
+    \'win'     : ['#I', '#W#F'],
+    \'cwin'    : ['#I', '#W#F'],
+    \'y'       : ['%Y-%m-%d', '%I:%M %P'],
+    \'z'       : '#H',
+    \'options' : {'status-justify' : 'left'}}
+
+" configure tmux navigator
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <c-a>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-a>j :TmuxNavigateDown<cr>
+nnoremap <silent> <c-a>k :TmuxNavigateUp<cr>
+nnoremap <silent> <c-a>l :TmuxNavigateRight<cr>
+nnoremap <silent> <c-a>x <c-w>c
+nnoremap <c-w>h <nop>
+nnoremap <c-w>j <nop>
+nnoremap <c-w>k <nop>
+nnoremap <c-w>l <nop>
+nnoremap <c-w>c <nop>
 
 execute pathogen#infect()
 
-if has('gui_running')
-    " colorscheme slate
+set background=dark
+colorscheme solarized
 
+if has('gui_running')
     set guioptions-=m " remove menu bar
     set guioptions-=T " remove toolbar
     set guioptions-=r " remove right-hand scroll bar
@@ -25,16 +50,18 @@ if has('gui_running')
 
     " toggle menu bar with <c-f1>
     nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
-else
-    " colorscheme desert
-endif
 
-if has('win32')
-    set guifont=Consolas:h10:cANSI
+    " set font
+    if has("gui_gtk2")
+        set guifont=Literation\ Mono\ Powerline\ 10
+    elseif has('win32')
+        set guifont=Consolas:h10:cANSI
+    " elseif has("x11")
+    "     set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
+    " else
+    "     set guifont=Courier_New:h11:cDEFAULT
+    endif
 endif
-
-set background=dark
-colorscheme solarized
 
 set tabstop=4
 set shiftwidth=4
@@ -115,7 +142,8 @@ set wildignore+=tags,*.gch
 let mapleader = "\<space>"
 let maplocalleader = "\\"
 nnoremap <leader>el :execute getline('.')<cr>
-nnoremap <leader>cl :let @l="- [" . expand('%:t') . ":" . line('.') . "]\n- " . getline('.') . "\n"<cr>
+nnoremap <silent><leader>yl :let @l="- [" . expand('%:t') . ":" . line('.') . "]\n- " . getline('.') . "\n"<cr>
+nnoremap <silent><leader>yb :let @+=expand('%:t') . ":" . line('.')<cr>
 nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
 nnoremap <leader>w- O<esc>80i-<esc>j^
@@ -128,8 +156,6 @@ nnoremap <c-j> 4<c-e>
 nnoremap <c-k> 4<c-y>
 nnoremap <a-j> 10j
 nnoremap <a-k> 10k
-" Use <c-w>c instead
-" nnoremap <leader>c :close<cr>
 
 " set up quickfix/location list window mappings
 let g:toggle_list_no_mappings = 1
@@ -158,22 +184,6 @@ map <leader>j <Plug>(easymotion-j)
 map <leader>k <Plug>(easymotion-k)
 map <leader>ma <Plug>(easymotion-jumptoanywhere)
 
-if has('win32')
-	nnoremap <leader>cdw :cd D:\work<cr>
-	nnoremap <leader>qcd :cd $ACDS_SRC_ROOT\quartus<cr>
-	nnoremap <leader>nt :NERDTree D:\work<cr>
-	nnoremap <leader>ct :ConqueTerm C:\Windows\System32\cmd.exe /k S:\tools\acds_bri\arc_shortcut.bat<cr>
-else
-	nnoremap <leader>cdw :cd /data/soconnel/work<cr>
-	nnoremap <leader>qcd :cd $ACDS_SRC_ROOT/quartus<cr>
-	nnoremap <leader>nt :NERDTree /data/soconnel/work<cr>
-	nnoremap <leader>ct :ConqueTerm bash<cr>
-endif
-
-" use `w to control window stuff instead of <c-w>
-" nnoremap `w <c-w>
-" nnoremap <c-w> <nop>
-
 " use jk to exit insert/visual mode
 inoremap jk <esc>
 vnoremap jk <esc>
@@ -182,9 +192,6 @@ vnoremap jk <esc>
 nnoremap <c-]> g<c-]>
 
 set colorcolumn=81
-if has('gui_running')
-    highlight ColorColumn ctermbg=black guibg=black
-endif
 
 " fix tab completion to make sense
 set wildmode=longest,list,full
