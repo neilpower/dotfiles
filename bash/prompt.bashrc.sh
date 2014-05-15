@@ -22,10 +22,15 @@ local reset='\[\e[0m\]'
 PS1='$SHANE_SHELL'
 PS1+="$green\u"
 PS1+="$green@"
-if [ -n "$SSH_TTY" ]; then
-    PS1+="$red\h"
+if [ -n "$ACDS_VERSION" ]; then
+    qk_dirname="$(basename "$(dirname "$ACDS_SRC_ROOT")")"
+    PS1+="$green[$qk_dirname $ACDS_VERSION/$ACDS_BUILD_NUMBER]"
 else
-    PS1+="$green\h"
+    if [ -n "$SSH_TTY" ]; then
+        PS1+="$red\h"
+    else
+        PS1+="$green\h"
+    fi
 fi
 PS1+="$reset "
 PS1+="$blue\W"
