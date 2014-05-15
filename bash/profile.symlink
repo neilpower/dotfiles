@@ -1,13 +1,13 @@
+# This file has to run under /bin/dash on ubuntu, so no bashisms allowed
+
 # Wrap in a function in order to avoid leaking local variables
 source_files () {
-    # Get path to dotfiles directory
-    local script_path="$(readlink -f "${BASH_SOURCE[0]}")"
-    local dotfiles_dir="$(dirname "$(dirname "$script_path")")"
-
     # Source all *.profile.sh files
-    while read -d '' -r profile_file <&9; do
-        source "$profile_file"
-    done 9< <(find ${dotfiles_dir}* -mindepth 2 -maxdepth 2 -regex '.*\.profile\.sh' -print0)
+    if [ -e ~/.dotfiles-path ]; then
+        for file in $(find $(cat ~/.dotfiles-path)* -mindepth 2 -maxdepth 2 -regex '.*\.profile\.sh'); do
+            . "$file"
+        done
+    fi
 }
 source_files
 unset source_files

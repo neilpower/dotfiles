@@ -79,6 +79,9 @@ sync)
         fi
     done 9< <(find "$HOME" "$HOME/.fonts" "$HOME/.config" -maxdepth 1 -type l -print0)
 
+    echo "Updating ~/.dotfiles-path"
+    echo $(pwd) > ~/.dotfiles-path
+
     # fc-cache -vf ~/.fonts
     ;;
 status|commit|diff|add|push)
