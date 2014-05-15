@@ -9,10 +9,13 @@ desired_ratio = [25, 25, 25, 25, 0, 0]
 
 def input_cents(prompt):
     val = input(prompt)
-    m = re.match(r'^([\d,]+)\.(\d\d)$', val)
-    if m == None:
-        sys.exit('Error: invalid amount: ' + str(val))
-    return int(m.group(1).replace(',','')) * 100 + int(m.group(2))
+    if val == '0':
+        return 0
+    else:
+        m = re.match(r'^([\d,]+)\.(\d\d)$', val)
+        if m == None:
+            sys.exit('Error: invalid amount: ' + str(val))
+        return int(m.group(1).replace(',','')) * 100 + int(m.group(2))
 
 def print_cents(c):
     minus = '-' if c < 0 else ''
@@ -22,7 +25,7 @@ class AmountCalc:
     def __init__(self):
         self.get_inputs()
         self.calc_amount_changed()
-        # self.calc_transfer_amounts()
+        self.calc_transfer_amounts()
         self.print_results()
 
     def get_inputs(self):
@@ -47,32 +50,50 @@ class AmountCalc:
         assert sum(self.amount_changed) == 0
 
     def calc_transfer_amounts(self):
-        mm = self.mm_amount
-        cash = self.cash_amount
-        self.transfer_from_cash = []
-        self.transfer_from_mm = []
+        self.transfers = {}
+        amounts_remaining = list(self.amount_changed)
 
-        for amount in self.amount_changed:
-            mm_transfer = min(amount, mm)
-            self.transfer_from_mm.append(mm_transfer)
-            amount -= mm_transfer
-            mm -= mm_transfer
+        def add_transfer(from_account, to_account, amount):
+            transfer_tuple = (from_account, to_account)
+            self.transfers[transfer_tuple] = self.transfers.get(transfer_tuple, 0) + amount
+            amounts_remaining[from_account] += amount
+            amounts_remaining[to_account] -= amount
 
-            cash_transfer = min(amount, cash)
-            self.transfer_from_cash.append(cash_transfer)
-            amount -= cash_transfer
-            cash -= cash_transfer
+        for to_account in range(len(fund_names)):
+            while amounts_remaining[to_account] > 0:
+                for from_account in range(len(fund_names)):
+                    if amounts_remaining[from_account] < 0:
+                        transfer_amount = min(amounts_remaining[to_account],
+                                -amounts_remaining[from_account])
+                        add_transfer(from_account, to_account, transfer_amount)
+                        break
 
-            assert amount == 0
+        for account in range(len(fund_names)):
+            total_from = sum(amount for (from_account, _), amount in
+                    self.transfers.items() if from_account == account)
+            total_to = sum(amount for (_, to_account), amount in
+                    self.transfers.items() if to_account == account)
 
-        assert sum(self.transfer_from_cash) == self.cash_amount
-        assert sum(self.transfer_from_mm) == self.mm_amount
+            if self.amount_changed[account] >= 0:
+                assert total_from == 0
+                assert total_to == self.amount_changed[account]
+            else:
+                assert total_from == -self.amount_changed[account]
+                assert total_to == 0
 
     def print_results(self):
+        print('')
         print('total: {}'.format(print_cents(self.total)))
+        print('')
+        print('change in balances:')
         for name, current, new, changed in zip(fund_names, self.current_amounts,
                 self.new_amounts, self.amount_changed):
             print('{}: {} -> {}: {}'.format(name, print_cents(current),
                 print_cents(new), print_cents(changed)))
+        print('')
+        print('transfers:')
+        for (from_account, to_account), amount in sorted(self.transfers.items()):
+            print('{} -> {}: {}'.format(fund_names[from_account],
+                fund_names[to_account], print_cents(amount)))
 
 AmountCalc()
