@@ -26,6 +26,10 @@ unbind n
 bind -r C-h previous-window
 bind -r C-l next-window
 
+# Notify me when window contents change
+setw -g monitor-activity on
+set -g visual-activity on
+
 # Smart pane switching with awareness of vim splits
 bind h run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a h) || tmux select-pane -L"
 bind j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a j) || tmux select-pane -D"
