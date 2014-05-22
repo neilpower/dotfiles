@@ -31,12 +31,10 @@ nnoremap <silent> <c-a>h :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-a>j :TmuxNavigateDown<cr>
 nnoremap <silent> <c-a>k :TmuxNavigateUp<cr>
 nnoremap <silent> <c-a>l :TmuxNavigateRight<cr>
-nnoremap <silent> <c-a>x <c-w>c
-nnoremap <c-w>h <nop>
-nnoremap <c-w>j <nop>
-nnoremap <c-w>k <nop>
-nnoremap <c-w>l <nop>
-nnoremap <c-w>c <nop>
+nnoremap <silent> <c-a><c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-a><c-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <c-a><c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-a><c-l> :TmuxNavigateRight<cr>
 
 " configure colorscheme
 set background=dark
