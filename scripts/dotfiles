@@ -80,11 +80,10 @@ link)
     ;;
 
 sync)
-    echo "Updating from git..."
     while read -d '' -r dir <&9; do
         if [ -e "$dir/.git" ]; then
             cd "$dir"
-            echo " Updating $dir..."
+            echo "Updating $dir..."
             git pull
             git submodule update --init --recursive
         fi
