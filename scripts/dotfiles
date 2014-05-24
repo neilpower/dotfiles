@@ -8,10 +8,6 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-# go to dotfiles directory
-script_path="$(readlink -f "${BASH_SOURCE[0]}")"
-cd "$(dirname "$script_path")/.."
-
 register_symlink ()
 {
     source="$1"
@@ -54,19 +50,19 @@ register_symlink ()
     fi
 }
 
-case "$1" in
-sync)
-    echo "Updating from git..."
-    git pull
-    git submodule update --init --recursive
+# go to dotfiles parent directory
+script_path="$(readlink -f "${BASH_SOURCE[0]}")"
+cd "$(dirname "$script_path")/../.."
 
+case "$1" in
+link)
     echo "Checking symlinks..."
     while read -d '' -r symlink_file <&9; do
         case "$symlink_file" in
         *.sh) source "$symlink_file" ;;
         *)    register_symlink "$HOME/.$(basename "$symlink_file" .symlink)" "$symlink_file" ;;
         esac
-    done 9< <(find $(pwd)* -mindepth 2 -maxdepth 2 -regex '.*\.symlink\(\.sh\)?' -print0)
+    done 9< <(find "$(pwd)" -mindepth 2 -maxdepth 3 -regex '.*\.symlink\(\.sh\)?' -print0)
 
     while read -d '' -r file <&9; do
         if [ ! -e "$file" ]; then
@@ -80,13 +76,36 @@ sync)
     done 9< <(find "$HOME" "$HOME/.fonts" "$HOME/.config" -maxdepth 1 -type l -print0)
 
     echo "Updating ~/.dotfiles-path"
-    echo $(pwd) > ~/.dotfiles-path
+    echo "$(pwd)" > ~/.dotfiles-path
+    ;;
+
+sync)
+    echo "Updating from git..."
+    while read -d '' -r dir <&9; do
+        if [ -e "$dir/.git" ]; then
+            cd "$dir"
+            echo " Updating $dir..."
+            git pull
+            git submodule update --init --recursive
+        fi
+    done 9< <(find "$(pwd)" -mindepth 1 -maxdepth 1 -type d -print0)
+
+    "$script_path" link
 
     # fc-cache -vf ~/.fonts
     ;;
-status|commit|diff|add|push)
-    git "$@"
+
+status)
+    while read -d '' -r dir <&9; do
+        if [ -e "$dir/.git" ]; then
+            cd "$dir"
+            echo "--- Status for $(basename "$dir"): ---"
+            git status
+            echo ""
+        fi
+    done 9< <(find "$(pwd)" -mindepth 1 -maxdepth 1 -type d -print0)
     ;;
+
 *)
     echo "Error: unknown argument: $1"
     exit 1

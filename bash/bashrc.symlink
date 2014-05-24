@@ -22,13 +22,13 @@ path_append ()  { path_remove "$1"; export PATH="$PATH:$1"; }
 # Wrap in a function in order to avoid leaking local variables
 source_files () {
     # Get path to dotfiles directory
-    local script_path="$(readlink -f "${BASH_SOURCE[0]}")"
-    local dotfiles_dir="$(dirname "$(dirname "$script_path")")"
+    local script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+    local dotfiles_dir="$(dirname "$(dirname "$script_dir")")"
 
     # Source all *.bashrc.sh files
     while read -d '' -r bashrc_file <&9; do
         source "$bashrc_file"
-    done 9< <(find ${dotfiles_dir}* -mindepth 2 -maxdepth 2 -regex '.*\.bashrc\.sh' -print0)
+    done 9< <(find ${dotfiles_dir} -mindepth 2 -maxdepth 3 -regex '.*\.bashrc\.sh' -print0)
 }
 source_files
 
