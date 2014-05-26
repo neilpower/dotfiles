@@ -135,6 +135,7 @@ set tags=./tags,./../tags,./../../tags
 " configure ctrlp
 let g:ctrlp_extensions = ['undo', 'line', 'mixed', 'buffertag']
 let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_switch_buffer = 0
 
 set visualbell
 set wildignore+=tags,*.gch
