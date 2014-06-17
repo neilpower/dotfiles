@@ -23,8 +23,12 @@ PS1='$SHANE_SHELL'
 PS1+="$green\u"
 PS1+="$green@"
 if [ -n "$ACDS_VERSION" ]; then
-    qk_dirname="$(basename "$(dirname "$ACDS_SRC_ROOT")")"
-    PS1+="$green[$qk_dirname $ACDS_VERSION/$ACDS_BUILD_NUMBER]"
+    if [ -n "$ACDS_SRC_ROOT" ]; then
+        qk_dirname="$(basename "$(dirname "$ACDS_SRC_ROOT")") "
+    else
+        qk_dirname=""
+    fi
+    PS1+="$green[$qk_dirname$ACDS_VERSION/$ACDS_BUILD_NUMBER]"
 else
     if [ -n "$SSH_TTY" ]; then
         PS1+="$red\h"
