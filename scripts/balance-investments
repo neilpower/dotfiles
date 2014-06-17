@@ -8,14 +8,14 @@ fund_names = ['TDB900', 'TDB902', 'TDB909', 'TDB911', 'TDB164', 'cash']
 desired_ratio = [25, 25, 25, 25, 0, 0]
 
 def input_cents(prompt):
-    val = input(prompt)
-    if val == '0':
-        return 0
-    else:
-        m = re.match(r'^([\d,]+)\.(\d\d)$', val)
+    while True:
+        val = input(prompt)
+        m = re.match(r'^\$?([\d,]+)(\.(\d\d))?$', val)
         if m == None:
-            sys.exit('Error: invalid amount: ' + str(val))
-        return int(m.group(1).replace(',','')) * 100 + int(m.group(2))
+            print('Error: invalid amount: ' + str(val))
+        else:
+            cents = int(m.group(3)) if m.group(3) != None else 0
+            return int(m.group(1).replace(',','')) * 100 + cents
 
 def print_cents(c):
     minus = '-' if c < 0 else ''
