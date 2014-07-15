@@ -23,3 +23,7 @@ set print inferior-events on
 
 # Tells GDB to let you use the GDB console while the program is running
 #set target-async on
+
+# this is annoying
+set pagination off
+
