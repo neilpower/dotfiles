@@ -129,8 +129,8 @@ else
 endif
 " let Tlist_Use_Right_Window = 1
 
-" look for tags files in current directory and two levels up as well
-set tags=./tags,./../tags,./../../tags
+" look for tags files in current directory and three levels up as well
+set tags=./tags,./../tags,./../../tags,./../../../tags
 
 " configure ctrlp
 let g:ctrlp_extensions = ['undo', 'line', 'mixed', 'buffertag']
