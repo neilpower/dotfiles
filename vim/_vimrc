@@ -114,6 +114,7 @@ nnoremap Y y$
 
 " turn on folding using syntax
 set foldmethod=syntax
+set foldlevelstart=99
 
 " turn off intro screen
 set shortmess+=I
