@@ -55,6 +55,3 @@
 [submodule "vim/vimfiles/bundle/vim-repeat"]
 	path = vim/vimfiles/bundle/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
-[submodule "vim/vimfiles/bundle/vim-opencl"]
-	path = vim/vimfiles/bundle/vim-opencl
-	url = https://github.com/petRUShka/vim-opencl.git
