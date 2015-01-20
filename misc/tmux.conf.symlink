@@ -17,8 +17,23 @@ setw -g mode-keys vi
 # change window split keys to be more vim-like
 unbind "\""
 unbind %
-bind s split-window -v
-bind v split-window -h
+# bind s split-window -v
+# bind v split-window -h
+
+# Set split window bindings
+bind \ split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind c new-window -c "#{pane_current_path}"
+
+# resize panes using PREFIX H, J, K, L
+bind H resize-pane -L 5
+bind J resize-pane -D 5
+bind K resize-pane -U 5
+bind L resize-pane -R 5
+
+# and use C-h and C-l to cycle through panes
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
 
 # Notify me when window contents change
 setw -g monitor-activity on
@@ -29,11 +44,15 @@ bind h run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\
 bind j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a j) || tmux select-pane -D"
 bind k run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a k) || tmux select-pane -U"
 bind l run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a l) || tmux select-pane -R"
+
 # Add C-* versions too since I hit them by mistake sometimes
-bind C-h run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-h) || tmux select-pane -L"
-bind C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-j) || tmux select-pane -D"
-bind C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-k) || tmux select-pane -U"
-bind C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-l) || tmux select-pane -R"
+# bind C-h run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-h) || tmux select-pane -L"
+# bind C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-j) || tmux select-pane -D"
+# bind C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-k) || tmux select-pane -U"
+# bind C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-a C-l) || tmux select-pane -R"
+
+# reload ~/.tmux.conf using PREFIX r
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
 
 # source tmuxline colors so that I see them before opening vim
 source-file ~/.tmux-tmuxline.conf
